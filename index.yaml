@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  sql-server:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-06T14:30:41.84101885+01:00"
+    description: A Helm chart for deploying a SQL Server instance on OpenShift
+    digest: e15816e7004febb327f0b1639dd1f7c01c1119d2f65bc5b3a89e08cd82e03b2f
+    name: sql-server
+    type: application
+    urls:
+    - https://mpbravo.github.io/helm-charts/sql-server-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-02-06T14:30:41.840693928+01:00"
