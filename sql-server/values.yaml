@@ -1,0 +1,67 @@
+# Default values for mssql-latest.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicas: 1
+
+image:
+  repository: mcr.microsoft.com/mssql/server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "2022-latest"
+
+ACCEPT_EULA:
+    value: "y"
+MSSQL_PID:
+    value: "Developer"
+MSSQL_AGENT_ENABLED:
+    value: "false"
+
+containers:
+  ports:
+      containerPort: 1433
+
+podAnnotations: {}
+
+podSecurityContext:
+  # For OpenShift: Only use fsGroupChangePolicy, OpenShift assigns fsGroup automatically
+  # For AKS/Kubernetes: Use fsGroup: 10001
+  fsGroupChangePolicy: OnRootMismatch
+  # fsGroup: 10001  # Uncomment for AKS/Kubernetes, comment for OpenShift
+
+# Container-level security context
+# For OpenShift: Required to bind to ports < 1024
+# For AKS/Kubernetes: Optional
+containerSecurityContext:
+  capabilities:
+    add:
+    - NET_BIND_SERVICE
+
+service:
+  port: 1433
+  type: LoadBalancer
+
+mssql:
+  # REQUIRED: SA password must be provided during installation
+  # Password must meet SQL Server policy: min 8 chars with uppercase, lowercase, numbers, and symbols
+  # Usage: helm install mssql-server . --set mssql.saPassword='YourStrongP@ssw0rd'
+  # WARNING: Do not commit passwords to version control!
+  saPassword: ""  # Leave empty - MUST be set via --set during helm install
+  secretName: "mssql"
+
+hostname: mssqlinst
+
+terminationGracePeriodSeconds: 30
+
+resources:
+  requests:
+    memory: "2G"
+    cpu: "2000m"
+  limits:
+    memory: "2G"
+    cpu: "2000m"
+
+persistence:
+  size: 8Gi
+  accessModes:
+    - ReadWriteOnce
