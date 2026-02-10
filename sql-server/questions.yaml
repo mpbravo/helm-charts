@@ -1,0 +1,188 @@
+questions:
+# SQL Server Edition Configuration
+- variable: MSSQL_PID.value
+  label: SQL Server Edition
+  description: "Select the SQL Server edition (Developer: free for non-production, Express: free with limitations, Standard/Enterprise: require licenses)"
+  type: enum
+  required: true
+  default: "Developer"
+  group: "SQL Server Configuration"
+  options:
+    - "Developer"
+    - "Express"
+    - "Standard"
+    - "Enterprise"
+    - "Evaluation"
+
+# SA Password
+- variable: mssql.saPassword
+  label: SA Password (System Administrator)
+  description: "REQUIRED: Must be at least 8 characters with uppercase, lowercase, numbers, and symbols"
+  type: password
+  required: true
+  group: "SQL Server Configuration"
+
+# Accept EULA
+- variable: ACCEPT_EULA.value
+  label: Accept SQL Server EULA
+  description: "You must accept the End User License Agreement to use SQL Server"
+  type: enum
+  required: true
+  default: "y"
+  group: "SQL Server Configuration"
+  options:
+    - "y"
+    - "Y"
+
+# SQL Agent
+- variable: MSSQL_AGENT_ENABLED.value
+  label: Enable SQL Server Agent
+  description: "Enable SQL Server Agent for job scheduling and automation"
+  type: boolean
+  required: false
+  default: "false"
+  group: "SQL Server Configuration"
+
+# Image Configuration
+- variable: image.tag
+  label: SQL Server Version
+  description: "Select the SQL Server version to deploy"
+  type: enum
+  required: true
+  default: "2022-latest"
+  group: "Container Image"
+  options:
+    - "2022-latest"
+    - "2019-latest"
+    - "2017-latest"
+
+- variable: image.pullPolicy
+  label: Image Pull Policy
+  description: "When to pull the container image"
+  type: enum
+  required: true
+  default: "IfNotPresent"
+  group: "Container Image"
+  options:
+    - "IfNotPresent"
+    - "Always"
+    - "Never"
+
+# Resources
+- variable: resources.requests.memory
+  label: Memory Request
+  description: "Minimum memory allocation for SQL Server"
+  type: enum
+  required: true
+  default: "2G"
+  group: "Resources"
+  options:
+    - "2G"
+    - "4G"
+    - "8G"
+    - "16G"
+
+- variable: resources.requests.cpu
+  label: CPU Request
+  description: "Minimum CPU allocation (in millicores)"
+  type: enum
+  required: true
+  default: "2000m"
+  group: "Resources"
+  options:
+    - "1000m"
+    - "2000m"
+    - "4000m"
+    - "8000m"
+
+- variable: resources.limits.memory
+  label: Memory Limit
+  description: "Maximum memory allocation for SQL Server"
+  type: enum
+  required: true
+  default: "2G"
+  group: "Resources"
+  options:
+    - "2G"
+    - "4G"
+    - "8G"
+    - "16G"
+
+- variable: resources.limits.cpu
+  label: CPU Limit
+  description: "Maximum CPU allocation (in millicores)"
+  type: enum
+  required: true
+  default: "2000m"
+  group: "Resources"
+  options:
+    - "1000m"
+    - "2000m"
+    - "4000m"
+    - "8000m"
+
+# Storage
+- variable: persistence.size
+  label: Storage Size
+  description: "Size of persistent volume for SQL Server data"
+  type: enum
+  required: true
+  default: "8Gi"
+  group: "Storage"
+  options:
+    - "8Gi"
+    - "20Gi"
+    - "50Gi"
+    - "100Gi"
+    - "200Gi"
+    - "500Gi"
+
+# Service Configuration
+- variable: service.type
+  label: Service Type
+  description: "How to expose SQL Server (LoadBalancer for external access, ClusterIP for internal only)"
+  type: enum
+  required: true
+  default: "LoadBalancer"
+  group: "Networking"
+  options:
+    - "LoadBalancer"
+    - "NodePort"
+    - "ClusterIP"
+
+- variable: service.port
+  label: Service Port
+  description: "Port for SQL Server connections"
+  type: int
+  required: true
+  default: 1433
+  group: "Networking"
+
+# Hostname
+- variable: hostname
+  label: SQL Server Hostname
+  description: "Hostname for the SQL Server instance"
+  type: string
+  required: false
+  default: "mssqlinst"
+  group: "Advanced"
+
+# Replicas
+- variable: replicas
+  label: Number of Replicas
+  description: "Number of SQL Server instances (typically 1)"
+  type: int
+  required: true
+  default: 1
+  min: 1
+  max: 1
+  group: "Advanced"
+
+# Pod Security Context (OpenShift vs Kubernetes)
+- variable: podSecurityContext.fsGroup
+  label: File System Group ID
+  description: "Set to 10001 for Kubernetes/AKS. Leave empty for OpenShift (auto-assigned)"
+  type: int
+  required: false
+  group: "Security"
+  show_if: "platform=kubernetes"

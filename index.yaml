@@ -1,9 +1,63 @@
 apiVersion: v1
 entries:
   sql-server:
+  - annotations:
+      artifacthub.io/category: database
+      artifacthub.io/changes: |
+        - kind: added
+          description: Enhanced OpenShift web console integration
+        - kind: added
+          description: Improved metadata and annotations for catalog display
+      artifacthub.io/displayName: SQL Server 2022
+      artifacthub.io/license: Commercial
+      artifacthub.io/links: |
+        - name: Documentation
+          url: https://learn.microsoft.com/en-us/sql/linux/quickstart-sql-server-containers-azure
+        - name: SQL Server Container
+          url: https://hub.docker.com/_/microsoft-mssql-server
+      artifacthub.io/logoURL: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+      artifacthub.io/operator: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/azure-marketplace/aks-store-demo
+      artifacthub.io/signKey: |
+        # Add your signing key if you sign your charts
+      category: Database
+      charts.openshift.io/archs: x86_64,amd64
+      charts.openshift.io/name: sql-server
+      charts.openshift.io/provider: Microsoft SQL Server
+      charts.openshift.io/supportURL: https://learn.microsoft.com/en-us/sql/linux/
+    apiVersion: v2
+    appVersion: "2022"
+    created: "2026-02-10T10:41:33.032578527+01:00"
+    description: A Helm chart for deploying a SQL Server instance on OpenShift and
+      Kubernetes with persistent storage and high availability
+    digest: 5d0fa934fa0e3fea59f7f41e4b2dd23b35b4d117130001956756f496a8d28abe
+    home: https://github.com/mpbravo/helm-charts
+    icon: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+    keywords:
+    - database
+    - sql
+    - mssql
+    - sql-server
+    - microsoft
+    - openshift
+    - kubernetes
+    - relational-database
+    maintainers:
+    - name: mpbravo
+      url: https://github.com/mpbravo
+    name: sql-server
+    sources:
+    - https://github.com/mpbravo/helm-charts
+    - https://hub.docker.com/_/microsoft-mssql-server
+    type: application
+    urls:
+    - https://mpbravo.github.io/helm-charts/sql-server-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-02-06T14:30:41.84101885+01:00"
+    created: "2026-02-10T10:41:33.032115405+01:00"
     description: A Helm chart for deploying a SQL Server instance on OpenShift
     digest: e15816e7004febb327f0b1639dd1f7c01c1119d2f65bc5b3a89e08cd82e03b2f
     name: sql-server
@@ -11,4 +65,4 @@ entries:
     urls:
     - https://mpbravo.github.io/helm-charts/sql-server-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-06T14:30:41.840693928+01:00"
+generated: "2026-02-10T10:41:33.025678864+01:00"

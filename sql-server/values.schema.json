@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SQL Server Helm Chart Configuration",
+  "description": "Configuration values for deploying Microsoft SQL Server on OpenShift/Kubernetes",
+  "type": "object",
+  "properties": {
+    "replicas": {
+      "type": "integer",
+      "title": "Number of Replicas",
+      "description": "Number of SQL Server replicas to deploy (typically 1 for SQL Server)",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 1
+    },
+    "image": {
+      "type": "object",
+      "title": "Container Image Configuration",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "title": "Image Repository",
+          "description": "Container image repository",
+          "default": "mcr.microsoft.com/mssql/server"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "Image Pull Policy",
+          "description": "Image pull policy",
+          "default": "IfNotPresent",
+          "enum": ["Always", "IfNotPresent", "Never"]
+        },
+        "tag": {
+          "type": "string",
+          "title": "Image Tag",
+          "description": "SQL Server version tag",
+          "default": "2022-latest",
+          "enum": ["2022-latest", "2019-latest", "2017-latest"]
+        }
+      }
+    },
+    "ACCEPT_EULA": {
+      "type": "object",
+      "title": "Accept EULA",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "Accept End User License Agreement",
+          "description": "Must be 'y' or 'Y' to accept the SQL Server EULA",
+          "default": "y",
+          "enum": ["y", "Y"]
+        }
+      },
+      "required": ["value"]
+    },
+    "MSSQL_PID": {
+      "type": "object",
+      "title": "SQL Server Edition",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "Product ID / Edition",
+          "description": "SQL Server edition: Developer (free, non-production), Express (free, limited), Standard, or Enterprise",
+          "default": "Developer",
+          "enum": ["Developer", "Express", "Standard", "Enterprise", "Evaluation"]
+        }
+      }
+    },
+    "MSSQL_AGENT_ENABLED": {
+      "type": "object",
+      "title": "SQL Server Agent",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "Enable SQL Server Agent",
+          "description": "Enable SQL Server Agent for job scheduling",
+          "default": "false",
+          "enum": ["true", "false"]
+        }
+      }
+    },
+    "mssql": {
+      "type": "object",
+      "title": "SQL Server Authentication",
+      "properties": {
+        "saPassword": {
+          "type": "string",
+          "title": "SA Password (REQUIRED)",
+          "description": "System Administrator password. MUST be at least 8 characters with uppercase, lowercase, numbers, and symbols",
+          "minLength": 8,
+          "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$"
+        },
+        "secretName": {
+          "type": "string",
+          "title": "Secret Name",
+          "description": "Name of the Kubernetes secret to store credentials",
+          "default": "mssql"
+        }
+      },
+      "required": ["saPassword"]
+    },
+    "hostname": {
+      "type": "string",
+      "title": "SQL Server Hostname",
+      "description": "Hostname for the SQL Server instance",
+      "default": "mssqlinst"
+    },
+    "service": {
+      "type": "object",
+      "title": "Service Configuration",
+      "properties": {
+        "port": {
+          "type": "integer",
+          "title": "Service Port",
+          "description": "Port for SQL Server service",
+          "default": 1433
+        },
+        "type": {
+          "type": "string",
+          "title": "Service Type",
+          "description": "Kubernetes service type",
+          "default": "LoadBalancer",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "Resource Limits",
+      "properties": {
+        "requests": {
+          "type": "object",
+          "title": "Resource Requests",
+          "properties": {
+            "memory": {
+              "type": "string",
+              "title": "Memory Request",
+              "description": "Minimum memory allocation (e.g., 2G, 4G, 8G)",
+              "default": "2G",
+              "enum": ["2G", "4G", "8G", "16G"]
+            },
+            "cpu": {
+              "type": "string",
+              "title": "CPU Request",
+              "description": "Minimum CPU allocation in millicores",
+              "default": "2000m",
+              "enum": ["1000m", "2000m", "4000m", "8000m"]
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "title": "Resource Limits",
+          "properties": {
+            "memory": {
+              "type": "string",
+              "title": "Memory Limit",
+              "description": "Maximum memory allocation",
+              "default": "2G",
+              "enum": ["2G", "4G", "8G", "16G"]
+            },
+            "cpu": {
+              "type": "string",
+              "title": "CPU Limit",
+              "description": "Maximum CPU allocation in millicores",
+              "default": "2000m",
+              "enum": ["1000m", "2000m", "4000m", "8000m"]
+            }
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "title": "Persistent Storage",
+      "properties": {
+        "size": {
+          "type": "string",
+          "title": "Storage Size",
+          "description": "Size of persistent volume for SQL Server data",
+          "default": "8Gi",
+          "enum": ["8Gi", "20Gi", "50Gi", "100Gi", "200Gi", "500Gi"]
+        },
+        "accessModes": {
+          "type": "array",
+          "title": "Access Modes",
+          "description": "Persistent volume access modes",
+          "default": ["ReadWriteOnce"],
+          "items": {
+            "type": "string",
+            "enum": ["ReadWriteOnce", "ReadWriteMany", "ReadOnlyMany"]
+          }
+        }
+      }
+    },
+    "podSecurityContext": {
+      "type": "object",
+      "title": "Pod Security Context",
+      "properties": {
+        "fsGroupChangePolicy": {
+          "type": "string",
+          "title": "File System Group Change Policy",
+          "description": "Policy for changing file system group ownership",
+          "default": "OnRootMismatch",
+          "enum": ["OnRootMismatch", "Always"]
+        },
+        "fsGroup": {
+          "type": "integer",
+          "title": "File System Group ID",
+          "description": "Group ID for file system permissions (use 10001 for Kubernetes/AKS, leave empty for OpenShift)",
+          "default": null
+        }
+      }
+    }
+  },
+  "required": ["ACCEPT_EULA", "mssql"]
+}

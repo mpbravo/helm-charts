@@ -1,6 +1,6 @@
 apiVersion: v2
 name: sql-server
-description: A Helm chart for deploying a SQL Server instance on OpenShift
+description: A Helm chart for deploying a SQL Server instance on OpenShift and Kubernetes with persistent storage and high availability
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,10 +15,94 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.1.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.16.0"
+appVersion: "2022"
+
+# Keywords for searching in Helm repositories
+keywords:
+  - database
+  - sql
+  - mssql
+  - sql-server
+  - microsoft
+  - openshift
+  - kubernetes
+  - relational-database
+
+# URL to the home page
+home: https://github.com/mpbravo/helm-charts
+
+# Source code repository URLs
+sources:
+  - https://github.com/mpbravo/helm-charts
+  - https://hub.docker.com/_/microsoft-mssql-server
+
+# Maintainers information
+maintainers:
+  - name: mpbravo
+    url: https://github.com/mpbravo
+
+# Icon for the chart (displayed in Helm catalog)
+icon: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+
+# Annotations for OpenShift Console
+annotations:
+  # Category in OpenShift Developer Catalog
+  category: Database
+  
+  # OpenShift certifications
+  charts.openshift.io/name: sql-server
+  
+  # Provider information
+  charts.openshift.io/provider: Microsoft SQL Server
+  
+  # Support information
+  charts.openshift.io/supportURL: https://learn.microsoft.com/en-us/sql/linux/
+  
+  # Documentation
+  charts.openshift.io/archs: x86_64,amd64
+  
+  # Display name in catalog
+  artifacthub.io/displayName: SQL Server 2022
+  
+  # Category for Artifact Hub
+  artifacthub.io/category: database
+  
+  # License information
+  artifacthub.io/license: Commercial
+  
+  # Logo reference
+  artifacthub.io/logoURL: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+  
+  # Readme link
+  artifacthub.io/links: |
+    - name: Documentation
+      url: https://learn.microsoft.com/en-us/sql/linux/quickstart-sql-server-containers-azure
+    - name: SQL Server Container
+      url: https://hub.docker.com/_/microsoft-mssql-server
+  
+  # Operator capabilities (if applicable)
+  artifacthub.io/operator: "false"
+  
+  # Changes in this version
+  artifacthub.io/changes: |
+    - kind: added
+      description: Enhanced OpenShift web console integration
+    - kind: added
+      description: Improved metadata and annotations for catalog display
+  
+  # Prerelease version
+  artifacthub.io/prerelease: "false"
+  
+  # Recommendations
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/azure-marketplace/aks-store-demo
+  
+  # Sign key (optional)
+  artifacthub.io/signKey: |
+    # Add your signing key if you sign your charts

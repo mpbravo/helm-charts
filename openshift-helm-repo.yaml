@@ -1,0 +1,27 @@
+apiVersion: helm.openshift.io/v1beta1
+kind: ProjectHelmChartRepository
+metadata:
+  name: sql-server-helm-repo
+spec:
+  # Connection configuration for your Helm repository
+  connectionConfig:
+    url: https://mpbravo.github.io/helm-charts/
+  
+  # Repository name as it will appear in the OpenShift console
+  name: SQL Server Helm Charts
+  
+  # Description displayed in the catalog
+  description: |
+    Helm charts for deploying Microsoft SQL Server on OpenShift with 
+    persistent storage, configurable resources, and high availability.
+    
+    Features:
+    - SQL Server 2022, 2019, and 2017 support
+    - Persistent storage with automatic volume provisioning
+    - Configurable resource limits
+    - Multiple edition support (Developer, Express, Standard, Enterprise)
+    - OpenShift security context compatibility
+    - LoadBalancer, NodePort, or ClusterIP service options
+  
+  # Disable certificate verification if needed (for self-signed certs)
+  # disabled: false
