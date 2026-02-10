@@ -29,10 +29,10 @@ entries:
       charts.openshift.io/supportURL: https://learn.microsoft.com/en-us/sql/linux/
     apiVersion: v2
     appVersion: "2022"
-    created: "2026-02-10T12:41:48.648543712+01:00"
+    created: "2026-02-10T16:26:08.50470907+01:00"
     description: A Helm chart for deploying a SQL Server instance on OpenShift and
       Kubernetes with persistent storage and high availability
-    digest: ee4d48aa2be20f0a8bce5d61b2bd63381d35a49390ef0476184921825e81a994
+    digest: 604e2da3f8b130c26e2c08661a9d541c04e2b99f472e6466977a06462f8778a8
     home: https://github.com/mpbravo/helm-charts
     icon: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
     keywords:
@@ -69,7 +69,7 @@ entries:
           url: https://learn.microsoft.com/en-us/sql/linux/quickstart-sql-server-containers-azure
         - name: SQL Server Container
           url: https://hub.docker.com/_/microsoft-mssql-server
-      artifacthub.io/logoURL: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
+      artifacthub.io/logoURL: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
       artifacthub.io/operator: "false"
       artifacthub.io/prerelease: "false"
       artifacthub.io/recommendations: |
@@ -83,12 +83,12 @@ entries:
       charts.openshift.io/supportURL: https://learn.microsoft.com/en-us/sql/linux/
     apiVersion: v2
     appVersion: "2022"
-    created: "2026-02-10T12:41:48.64791973+01:00"
+    created: "2026-02-10T16:26:08.503400916+01:00"
     description: A Helm chart for deploying a SQL Server instance on OpenShift and
       Kubernetes with persistent storage and high availability
     digest: b243e8c039560df567cf5c9bffd6fab97e8b7c48198fd30751f4420a999f3f69
     home: https://github.com/mpbravo/helm-charts
-    icon: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
+    icon: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
     keywords:
     - database
     - sql
@@ -123,7 +123,7 @@ entries:
           url: https://learn.microsoft.com/en-us/sql/linux/quickstart-sql-server-containers-azure
         - name: SQL Server Container
           url: https://hub.docker.com/_/microsoft-mssql-server
-      artifacthub.io/logoURL: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
+      artifacthub.io/logoURL: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
       artifacthub.io/operator: "false"
       artifacthub.io/prerelease: "false"
       artifacthub.io/recommendations: |
@@ -137,12 +137,12 @@ entries:
       charts.openshift.io/supportURL: https://learn.microsoft.com/en-us/sql/linux/
     apiVersion: v2
     appVersion: "2022"
-    created: "2026-02-10T12:41:48.647528296+01:00"
+    created: "2026-02-10T16:26:08.501519984+01:00"
     description: A Helm chart for deploying a SQL Server instance on OpenShift and
       Kubernetes with persistent storage and high availability
     digest: 5d0fa934fa0e3fea59f7f41e4b2dd23b35b4d117130001956756f496a8d28abe
     home: https://github.com/mpbravo/helm-charts
-    icon: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
+    icon: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
     keywords:
     - database
     - sql
@@ -165,7 +165,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-02-10T12:41:48.647116805+01:00"
+    created: "2026-02-10T16:26:08.499450075+01:00"
     description: A Helm chart for deploying a SQL Server instance on OpenShift
     digest: e15816e7004febb327f0b1639dd1f7c01c1119d2f65bc5b3a89e08cd82e03b2f
     name: sql-server
@@ -173,4 +173,4 @@ entries:
     urls:
     - https://mpbravo.github.io/helm-charts/sql-server-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-10T12:41:48.646670936+01:00"
+generated: "2026-02-10T16:26:08.497693487+01:00"
