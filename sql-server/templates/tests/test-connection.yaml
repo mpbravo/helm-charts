@@ -6,10 +6,62 @@ metadata:
     {{- include "sql-server.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "sql-server.fullname" . }}:{{ .Values.service.port }}']
+    - name: sqlcmd-test
+      image: mcr.microsoft.com/mssql-tools:latest
+      command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Testing SQL Server connection..."
+          
+          # Wait for SQL Server to be ready
+          for i in {1..30}; do
+            if /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT @@VERSION" > /dev/null 2>&1; then
+              echo "✓ SQL Server is ready and accepting connections"
+              break
+            fi
+            echo "Waiting for SQL Server to be ready... (attempt $i/30)"
+            sleep 2
+          done
+          
+          # Test 1: Check SQL Server version
+          echo "Test 1: Checking SQL Server version..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT @@VERSION AS 'SQL Server Version'"
+          
+          # Test 2: Check server properties
+          echo "Test 2: Checking server properties..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT SERVERPROPERTY('ProductVersion') AS Version, SERVERPROPERTY('ProductLevel') AS Level, SERVERPROPERTY('Edition') AS Edition"
+          
+          # Test 3: Create test database
+          echo "Test 3: Creating test database..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'TestDB') CREATE DATABASE TestDB"
+          
+          # Test 4: Create test table and insert data
+          echo "Test 4: Creating test table and inserting data..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -d TestDB -Q "CREATE TABLE TestTable (ID INT, Name VARCHAR(50)); INSERT INTO TestTable VALUES (1, 'Test Data');"
+          
+          # Test 5: Query test data
+          echo "Test 5: Querying test data..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -d TestDB -Q "SELECT * FROM TestTable"
+          
+          # Test 6: Check if data directory is writable (persistence)
+          echo "Test 6: Checking database files location..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT name, physical_name FROM sys.master_files WHERE database_id = DB_ID('TestDB')"
+          
+          # Test 7: Clean up test database
+          echo "Test 7: Cleaning up test database..."
+          /opt/mssql-tools/bin/sqlcmd -S {{ include "sql-server.fullname" . }},{{ .Values.service.port }} -U sa -P "${MSSQL_SA_PASSWORD}" -Q "DROP DATABASE TestDB"
+          
+          echo "✓ All tests passed successfully!"
+          exit 0
+      env:
+        - name: MSSQL_SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mssql.secretName }}
+              key: MSSQL_SA_PASSWORD
   restartPolicy: Never
