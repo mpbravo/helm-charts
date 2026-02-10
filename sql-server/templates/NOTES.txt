@@ -1,22 +1,64 @@
-1. Get the application URL by running these commands:
-{{- if .Values.ingress.enabled }}
-{{- range $host := .Values.ingress.hosts }}
-  {{- range .paths }}
-  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
-  {{- end }}
-{{- end }}
+Thank you for installing {{ .Chart.Name }} - SQL Server {{ .Chart.AppVersion }}!
+
+Your SQL Server instance has been deployed to namespace: {{ .Release.Namespace }}
+
+To get the connection information:
+
+{{- if contains "LoadBalancer" .Values.service.type }}
+
+1. Get the external IP address (may take a few minutes):
+   
+   export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "sql-server.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+   echo "SQL Server is available at: $SERVICE_IP,{{ .Values.service.port }}"
+
+2. Connect with sqlcmd:
+   
+   sqlcmd -S $SERVICE_IP,{{ .Values.service.port }} -U sa -P '<your-password>'
+
 {{- else if contains "NodePort" .Values.service.type }}
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "sql-server.fullname" . }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
-{{- else if contains "LoadBalancer" .Values.service.type }}
-     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch its status by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "sql-server.fullname" . }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "sql-server.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$SERVICE_IP:{{ .Values.service.port }}
+
+1. Get the Node IP and Port:
+   
+   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "sql-server.fullname" . }})
+   echo "SQL Server is available at: $NODE_IP,$NODE_PORT"
+
+2. Connect with sqlcmd:
+   
+   sqlcmd -S $NODE_IP,$NODE_PORT -U sa -P '<your-password>'
+
 {{- else if contains "ClusterIP" .Values.service.type }}
-  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "sql-server.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
-  export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-  echo "Visit http://127.0.0.1:8080 to use your application"
-  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
+
+1. Port forward to access SQL Server locally:
+   
+   kubectl port-forward --namespace {{ .Release.Namespace }} service/{{ include "sql-server.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+
+2. In another terminal, connect with sqlcmd:
+   
+   sqlcmd -S localhost,{{ .Values.service.port }} -U sa -P '<your-password>'
+
 {{- end }}
+
+Useful commands:
+
+  # View pod status
+  kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+  # View logs
+  kubectl logs --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+  # Check service
+  kubectl get svc --namespace {{ .Release.Namespace }} {{ include "sql-server.fullname" . }}
+
+  # Check persistent volume claim
+  kubectl get pvc --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+  # Run Helm test
+  helm test {{ .Release.Name }} --namespace {{ .Release.Namespace }}
+
+For more information, visit:
+  - Chart repository: https://mpbravo.github.io/helm-charts/
+  - SQL Server docs: https://learn.microsoft.com/en-us/sql/
+
+⚠️  SECURITY NOTE: Make sure to use a strong password and secure your SQL Server instance appropriately for production use.
+

@@ -85,9 +85,9 @@
         "saPassword": {
           "type": "string",
           "title": "SA Password (REQUIRED)",
-          "description": "System Administrator password. MUST be at least 8 characters with uppercase, lowercase, numbers, and symbols",
+          "description": "System Administrator password. MUST be at least 8 characters with uppercase, lowercase, numbers, and symbols. SQL Server will validate password complexity.",
           "minLength": 8,
-          "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$"
+          "maxLength": 128
         },
         "secretName": {
           "type": "string",
