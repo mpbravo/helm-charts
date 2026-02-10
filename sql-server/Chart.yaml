@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.2
+version: 0.1.3
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -48,7 +48,7 @@ maintainers:
     url: https://github.com/mpbravo
 
 # Icon for the chart (displayed in Helm catalog)
-icon: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+icon: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
 
 # Annotations for OpenShift Console
 annotations:
@@ -77,7 +77,7 @@ annotations:
   artifacthub.io/license: Commercial
   
   # Logo reference
-  artifacthub.io/logoURL: https://raw.githubusercontent.com/docker-library/docs/bb0f39c69154e0bdc57d6b57c3a16c081eddce76/microsoft-mssql-server/logo.png
+  artifacthub.io/logoURL: https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg
   
   # Readme link
   artifacthub.io/links: |
