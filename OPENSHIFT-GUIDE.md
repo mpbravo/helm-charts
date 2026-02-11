@@ -51,14 +51,14 @@ EOF
 
 ### Step 2: Deploy from Web Console
 
-1. **Switch to Developer Perspective:**
-   - Click **Developer** in the top-left dropdown
+1. **Go to your Project Topology:**
+   - Click **Workloads** and then **Topology** on the left menu
    - Select your project/namespace (or create a new one)
 
 2. **Add Helm Chart:**
-   - Click **+Add** in the left sidebar
-   - Select **Helm Chart** from the catalog
+   - Click on the openbook with a + sign in the top bar
    - Search for **"sql-server"**
+   - Click **Create**
 
 3. **Configure Installation:**
    - Click on the **SQL Server** chart

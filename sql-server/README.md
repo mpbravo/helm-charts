@@ -1,6 +1,6 @@
 # SQL Server Helm Chart
 
-A Helm chart for deploying Microsoft SQL Server on Kubernetes and OpenShift clusters with persistent storage and high availability.
+A Helm chart for deploying Microsoft SQL Server on OpenShift with persistent storage and high availability.
 
 ## Overview
 
@@ -74,9 +74,6 @@ The following table lists the configurable parameters of the SQL Server chart an
 After installation, get the external IP address:
 
 ```bash
-# For Kubernetes/AKS
-kubectl get service mssql-deployment
-
 # For OpenShift
 oc get service mssql-deployment
 ```
@@ -110,9 +107,6 @@ Server=<EXTERNAL-IP>,1433;Database=master;User Id=sa;Password=YourStrongP@ssw0rd
 Check pod status:
 
 ```bash
-# Kubernetes
-kubectl get pods
-
 # OpenShift
 oc get pods
 ```
@@ -120,9 +114,6 @@ oc get pods
 View pod logs:
 
 ```bash
-# Kubernetes
-kubectl logs <pod-name>
-
 # OpenShift
 oc logs <pod-name>
 ```
@@ -130,9 +121,6 @@ oc logs <pod-name>
 Check persistent volume claim:
 
 ```bash
-# Kubernetes
-kubectl get pvc
-
 # OpenShift
 oc get pvc
 ```
@@ -148,9 +136,6 @@ The chart is configured for automatic recovery:
 To test recovery, you can delete the pod:
 
 ```bash
-# Kubernetes
-kubectl delete pod <pod-name>
-
 # OpenShift
 oc delete pod <pod-name>
 ```
@@ -197,9 +182,6 @@ helm uninstall mssql-server
 **Note:** This command removes all resources associated with the chart, **except** the Persistent Volume Claim (PVC). To delete the PVC and data:
 
 ```bash
-# Kubernetes
-kubectl delete pvc data-mssql-server-0
-
 # OpenShift
 oc delete pvc data-mssql-server-0
 ```
@@ -211,7 +193,7 @@ oc delete pvc data-mssql-server-0
 Check if the persistent volume is bound:
 
 ```bash
-kubectl describe pvc
+oc describe pvc
 ```
 
 Ensure your cluster has a storage provisioner configured.
@@ -220,17 +202,17 @@ Ensure your cluster has a storage provisioner configured.
 
 1. Verify the service has an external IP:
    ```bash
-   kubectl get service mssql-deployment
+   oc get service mssql-deployment
    ```
 
 2. Check if the pod is running:
    ```bash
-   kubectl get pods
+   oc get pods
    ```
 
 3. View pod logs for errors:
    ```bash
-   kubectl logs <pod-name>
+   oc logs <pod-name>
    ```
 
 ### Password not accepted
@@ -274,4 +256,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 For issues related to:
 - **This Helm chart:** Open an issue in this repository
 - **SQL Server:** See [Microsoft SQL Server Documentation](https://learn.microsoft.com/en-us/sql/)
-- **Kubernetes/OpenShift:** Consult respective platform documentation
+- **OpenShift:** Consult respective platform documentation
